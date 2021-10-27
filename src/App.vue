@@ -1,25 +1,38 @@
 <template>
   <div id="app">
-    <cinema-header/>
+    <v-app fill-height>
+      <v-container fluid>
+        <header-item/>
+        <v-row>
+          <sidebar-item/>
+          <router-view/>
+        </v-row>
+      </v-container>
+    </v-app>
   </div>
 </template>
 
 <script>
-import CinemaHeader from '@/components/Header'
+import HeaderItem from '@/components/Header'
+import SidebarItem from '@/components/Sidebar'
 
 export default {
   components: {
-    CinemaHeader
+    HeaderItem,
+    SidebarItem
   }
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap')
 #app 
-  font-family: Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing: antialiased
-  -moz-osx-font-smoothing: grayscale  
-  background: #222B31
+  font-family: 'Poppins', sans-serif
+  background: #222b32
+  color: #fff
+
+.container 
   min-height: 100vh
-    
+  display: grid
+  grid-template-rows: minmax(60px, auto) minmax(0, 100%)
 </style>
