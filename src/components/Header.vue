@@ -1,14 +1,19 @@
 <template>
     <v-row class="header mb-3">
-        <v-col class="logo col-2 d-flex justify-center align-center">
-            <v-icon 
-                class="mr-1" 
-                color="white"
-                small 
+        <v-col class="logo col-2 d-flex justify-center align-center pa-0">
+            <router-link 
+                :to="'/'" 
+                class="d-flex justify-center align-center text-decoration-none"
             >
-                mdi-movie-open
-            </v-icon>
-            <span>FETEST API</span>
+                <v-icon 
+                    class="mr-1" 
+                    color="white"
+                    small 
+                >
+                    mdi-movie-open
+                </v-icon>
+                <span>FETEST API</span>
+            </router-link>
         </v-col>
         <v-col class="col-8 d-flex align-center">
             <v-text-field 
@@ -23,8 +28,7 @@
                 dark
             ></v-text-field>
         </v-col>
-        <v-col class="col-2 d-flex justify-center align-center pa-0">
-            
+        <v-col class="col-2 d-flex justify-center align-center pa-0">      
             <v-menu offset-y rounded="0"  :close-on-content-click="false">
                 <template v-slot:activator="{ attrs, on }">
                     <v-btn
@@ -36,31 +40,39 @@
                         v-on="on"
                         height="100%"
                     >
-                        <v-icon 
-                            class="mr-1" 
-                            color="white"
-                        >
-                            mdi-filter-variant
-                        </v-icon>
                         <span>Genres</span>
+                        <v-badge
+                            :content="searchGenres.length"
+                            :value="searchGenres.length"
+                            color="#181C1F"
+                            small
+                            overlap
+                        >
+                            <v-icon 
+                                class="mr-1" 
+                                color="white"
+                            >
+                                mdi-filter-variant
+                            </v-icon>
+                        </v-badge>
                     </v-btn>
                 </template>
                 <v-list color="#181C1F">
                     <v-list-item
-                    v-for="(genre, index) in genres"
-                    :key="index"
+                        v-for="(genre, index) in genres"
+                        :key="index"
                     >
                         <v-checkbox
-                            @click="test"
                             v-model="searchGenres"
                             :label="genre"
                             :value="index"
+                            hide-details="auto"
                             dark
                             color="#F84250"
                         ></v-checkbox>
                     </v-list-item>
                 </v-list>
-                </v-menu>
+            </v-menu>
         </v-col>
     </v-row>
 </template>
@@ -75,11 +87,13 @@ export default {
         searchGenres: []
     }),
     computed: mapGetters(['genres']),
+    watch: {
+        searchGenres() {
+            this.search();
+        }
+    },
     methods: {
         ...mapActions(['fetchMovies']),
-        test() {
-            console.log(this.searchGenres);
-        },
         typing() {
             clearTimeout(this.searchTimeout);
         },
@@ -88,7 +102,10 @@ export default {
             this.searchTimeout = setTimeout(() => this.search(), 500);
         },
         async search() {
-            await this.fetchMovies({name: this.searchText})
+            await this.fetchMovies({
+                name: this.searchText,
+                genres: this.searchGenres
+            });
         }
     }
 }
@@ -98,18 +115,33 @@ export default {
 .header
     font-weight: 100
     height: 65px
-    background: #FE4250
+    background: $light-red
     color: #FFF
 
 .logo
-    background: #F73744
+    background: $dark-red
     font-size: 1.2rem
     font-weight: 800
+    
+    a
+        height: 100%
+        width: 100%
+        color: #FFF !important
 
 .v-btn
-    font-family: 'Poppins', sans-serif !important
+    *
+        font-family: 'Poppins', sans-serif !important
 
 .v-menu__content
     left: auto !important
     right: 0 !important
+
+.v-list-item
+    &:hover
+        background: $light-gray
+
+    .v-input
+        width: 100%
+        padding: 0
+        margin: 0
 </style>
