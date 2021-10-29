@@ -15,65 +15,68 @@
                 <span>FETEST API</span>
             </router-link>
         </v-col>
-        <v-col class="col-8 d-flex align-center">
-            <v-text-field 
-                v-model="searchText"
-                class="pa-0"
-                placeholder="Search movies"
-                hide-details="auto"
-                prepend-icon="mdi-magnify"
-                color="white"
-                @keydown="typing()"
-                @keyup="finishedTyping()"
-                dark
-            ></v-text-field>
-        </v-col>
-        <v-col class="col-2 d-flex justify-center align-center pa-0">      
-            <v-menu offset-y rounded="0"  :close-on-content-click="false">
-                <template v-slot:activator="{ attrs, on }">
-                    <v-btn
-                        text 
-                        tile 
-                        block 
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                        height="100%"
-                    >
-                        <span>Genres</span>
-                        <v-badge
-                            :content="searchGenres.length"
-                            :value="searchGenres.length"
-                            color="#181C1F"
-                            small
-                            overlap
-                        >
-                            <v-icon 
-                                class="mr-1" 
-                                color="white"
-                            >
-                                mdi-filter-variant
-                            </v-icon>
-                        </v-badge>
-                    </v-btn>
-                </template>
-                <v-list color="#181C1F">
-                    <v-list-item
-                        v-for="(genre, index) in genres"
-                        :key="index"
-                    >
-                        <v-checkbox
-                            v-model="searchGenres"
-                            :label="genre"
-                            :value="index"
-                            hide-details="auto"
+        
+        <template v-if="$route.name === 'movies'">
+            <v-col class="col-8 d-flex align-center">
+                <v-text-field 
+                    v-model="searchText"
+                    class="pa-0"
+                    placeholder="Search movies"
+                    hide-details="auto"
+                    prepend-icon="mdi-magnify"
+                    color="white"
+                    @keydown="typing()"
+                    @keyup="finishedTyping()"
+                    dark
+                ></v-text-field>
+            </v-col>
+            <v-col class="col-2 d-flex justify-center align-center pa-0">      
+                <v-menu offset-y rounded="0"  :close-on-content-click="false">
+                    <template v-slot:activator="{ attrs, on }">
+                        <v-btn
+                            text 
+                            tile 
+                            block 
                             dark
-                            color="#F84250"
-                        ></v-checkbox>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-        </v-col>
+                            v-bind="attrs"
+                            v-on="on"
+                            height="100%"
+                        >
+                            <span>Genres</span>
+                            <v-badge
+                                :content="searchGenres.length"
+                                :value="searchGenres.length"
+                                color="#181C1F"
+                                small
+                                overlap
+                            >
+                                <v-icon 
+                                    class="mr-1" 
+                                    color="white"
+                                >
+                                    mdi-filter-variant
+                                </v-icon>
+                            </v-badge>
+                        </v-btn>
+                    </template>
+                    <v-list color="#181C1F">
+                        <v-list-item
+                            v-for="(genre, index) in genres"
+                            :key="index"
+                        >
+                            <v-checkbox
+                                v-model="searchGenres"
+                                :label="genre"
+                                :value="index"
+                                hide-details="auto"
+                                dark
+                                color="#F84250"
+                            ></v-checkbox>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-col>
+        </template>
     </v-row>
 </template>
 
@@ -90,6 +93,10 @@ export default {
     watch: {
         searchGenres() {
             this.search();
+        },
+        $route() {
+            this.searchText = null;
+            this.searchGenres.length = 0
         }
     },
     methods: {

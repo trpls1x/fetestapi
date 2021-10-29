@@ -43,6 +43,7 @@ export default {
     color: #FFF
     &:hover
         cursor: pointer
+        color: $light-red
         
 .genre
     color: $text-gray

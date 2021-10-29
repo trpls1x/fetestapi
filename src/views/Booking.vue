@@ -1,26 +1,116 @@
 <template>
     <v-col class="sessions col-10 pt-12 px-10 d-flex flex-column">
-        <span class="text-h3 mb-12">Sessions</span>
-        
-        <v-row>
-            <v-col class="col-12 d-flex flex-column align-center">
-                <h3 class="mb-3">SCREEN</h3>
-                <table>
-                    <tr v-for="row in places" :key="row[0].row">
-                        <td>{{ row[0].row }}</td>
-                        <td v-for="seat in row[1]" :key="seat.seat" >
-                            <div 
-                                class="seat d-flex justify-center align-center"
-                                :class="{ 'booked' : !seat.is_free , 'active' : chosenTickets.findIndex(i => i.row === row[0].row && i.seat === seat.seat) >= 0}"
-                                @click="clickSeat(row[0].row, seat.seat)"
+        <div v-if="contentLoaded">
+            <v-row class="mb-12">
+                <v-col class="col-2">
+                    <v-img :src="movie.image"></v-img>
+                </v-col>
+                <v-col class="col-10 d-flex flex-column pa-3">
+                    <span class="text-h4">{{ movie.name }}</span>
+                    <span class="genre text-h6 mb-5">{{ genres[movie.genre] }}</span>
+                    <span class="text-h5">{{ session.showdate | luxon }}</span>
+                    <span class="text-h5">{{ session.daytime }}</span>
+                </v-col>
+            </v-row>
+            
+            <v-row>
+                <v-col class="col-12 d-flex flex-column align-center">
+                    <table class="mb-5">
+                        <caption class="mb-3">
+                            <span class="screen text-h5 text-center">SCREEN</span>
+                            <svg viewBox="0 0 806 21" fill="#fff">
+                                <path d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
+                            </svg>
+                        </caption>
+                        <tr v-for="row in places" :key="row[0].row">
+                            <td>{{ row[0].row }}</td>
+                            <td v-for="seat in row[1]" :key="seat.seat" >
+                                <div 
+                                    class="seat d-flex justify-center align-center"
+                                    :class="{ 'booked' : !seat.is_free, 
+                                              'active' : chosenTickets.findIndex(ticket => ticket.id === `r${row[0].row}s${seat.seat}`) >= 0}"
+                                    @click="clickSeat(row[0].row, seat.seat)"
+                                >
+                                    <span>{{ seat.seat }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <v-dialog
+                        v-model="dialog"
+                        width="500"
+                        scrollable
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-badge
+                                :content="chosenTickets.length"
+                                :value="chosenTickets.length"
+                                color="#F73744"
+                                small
+                                overlap
+                                bordered
                             >
-                                <span>{{ seat.seat }}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </v-col>
-        </v-row>
+                                <v-btn color="#FE4250" 
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    dark
+                                >
+                                    Book tickets
+                                </v-btn>
+                            </v-badge>
+                        </template>
+
+                        <v-card class="px-3" dark>
+                            <v-card-title class="text-h5">
+                                Book tickets
+                            </v-card-title>
+
+                            <v-card-text style="max-height: 300px;">
+                                <div v-if="!chosenTickets.length" class="d-flex justify-center pa-3 mb-1">
+                                    <span>Please choose at least one ticket</span>
+                                </div>
+                                
+                                <div v-for="ticket in chosenTickets" :key="ticket.id" class="ticket d-flex align-center pa-3 mb-1">
+                                    <div class="ticket-info d-flex justify-space-around">
+                                        <span>Row: {{ ticket.row }}</span>
+                                        <span>Seat: {{ ticket.seat }}</span>
+                                    </div>
+                                    <v-btn 
+                                        icon
+                                        @click="clickSeat(ticket.row, ticket.seat)"
+                                    >
+                                        <v-icon>mdi-close-circle</v-icon>
+                                    </v-btn>
+                                </div>
+                            </v-card-text>
+                            
+
+                            <v-card-actions class="justify-end px-0">
+                                <v-btn
+                                    text
+                                    @click="dialog = false"
+                                >
+                                    Back
+                                </v-btn>
+                                <v-btn color="#FE4250" 
+                                    @click="bookTickets()"
+                                    :disabled="!chosenTickets.length"
+                                    dark
+                                >
+                                    Book tickets
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-col>
+            </v-row>
+        </div>
+        <div v-else class="d-flex justify-center align-center fill-height">
+            <v-progress-circular
+                indeterminate
+            ></v-progress-circular>
+        </div>
     </v-col>
 </template>
 
@@ -29,25 +119,52 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
     data: () => ({
-        chosenTickets: []
+        movie: {},
+        session: {},
+        chosenTickets: [],
+        dialog: false,
+        contentLoaded: false
     }),
-    computed: mapGetters(['places']),
+    computed: mapGetters(['places', 'movies', 'genres']),
     async mounted() {
-        await this.fetchPlaces({
+        this.contentLoaded = false;
+        this.session = {
             movie_id: this.$route.query.movie_id,
             daytime: this.$route.query.daytime,
             showdate: this.$route.query.showdate
-        });
+        }
+        await this.fetchPlaces(this.session);
+        await this.fetchMovies({ movie_id: this.session.movie_id});
+        this.movie = this.movies[0];
+        this.contentLoaded = true;
     }, 
     methods: {
-        ...mapActions(['fetchPlaces']),
+        ...mapActions(['fetchPlaces', 'fetchMovies', 'bookTicket']),
         clickSeat(row, seat) {
-            let ticketIndex = this.chosenTickets.findIndex(i => i.row === row && i.seat === seat);
+            let ticketIndex = this.chosenTickets.findIndex(ticket => ticket.id === `r${row}s${seat}`);
             if(ticketIndex >= 0) {
                 this.chosenTickets.splice(ticketIndex, 1);
                 return;
             }
-            this.chosenTickets.push({ row: row, seat: seat });
+            this.chosenTickets.push({ 
+                row: row, 
+                seat: seat ,
+                id: `r${row}s${seat}`
+            });
+        },
+        async bookTickets() {
+            for (let ticket of this.chosenTickets) {
+                await this.bookTicket({
+                    movie_id: this.session.movie_id,
+                    row: ticket.row,
+                    seat: ticket.seat,
+                    showdate: this.session.showdate,
+                    daytime: this.session.daytime
+                });
+            }
+            await this.fetchPlaces(this.session);
+            this.chosenTickets.length = 0;
+            this.dialog = false;
         }
     }
 }
@@ -58,9 +175,24 @@ export default {
     *
         font-family: 'Poppins', sans-serif !important
 
+.genre
+    color: $text-gray
+
 table
     border-spacing: 5px
-    overflow-x: auto
+    user-select: none
+
+caption
+    position: relative
+    padding-left: 35px
+    padding-right: 7px
+
+.screen
+    left: 45%
+    position: absolute
+    padding: 0 10px
+    top: -5px
+    background: $light-gray
 
 td
     &:first-child
@@ -79,25 +211,25 @@ td
         cursor: pointer
         background: $light-red
         color: #FFF
-        
-        span
-            visibility: visible
-
-    span
-        visibility: hidden
-
 
 .active
     background: $dark-red
     color: #FFF
-
-    span
-        visibility: visible
 
 .booked
     pointer-events: none
     background: $light-gray
     
     span
-        visibility: hidden
+        visibility: hidden  
+
+.v-card
+    background: $light-gray !important
+    border: 1px solid #FFF
+
+.ticket
+    background: $dark-gray
+
+.ticket-info
+    width: 100%
 </style>

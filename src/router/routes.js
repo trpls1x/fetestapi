@@ -23,5 +23,10 @@ const routes = [
         path: '/booking',
         component: () => import('@/views/Booking')
     },
+    {
+        name: 'tickets',
+        path: '/tickets',
+        component: () => import('@/views/Tickets')
+    },
 ]
 export default routes

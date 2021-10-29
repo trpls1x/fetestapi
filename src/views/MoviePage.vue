@@ -13,23 +13,31 @@
                 <div class="description" v-html="movie.description"></div>
             </v-col>
         </v-row>
+
+        <span class="text-h2">Available sessions</span>
+        <session :movie="movie" :session="movieShows[movie.id]"/>
     </v-col>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import Session from '@/components/Session'
 
 export default {
+    components: {
+        Session
+    },
     data: () => ({
         movie: {}
     }),
-    computed: mapGetters(['movies']),
-    async created() {
+    computed: mapGetters(['movies', 'movieShows']),
+    async mounted() {
         await this.fetchMovies({ movie_id: this.$route.params.id });
+        await this.fetchMovieShows({ movie_id: this.$route.params.id });
         this.movie = this.movies[0];
     },
     methods: {
-        ...mapActions(['fetchMovies'])
+        ...mapActions(['fetchMovies', 'fetchMovieShows'])
     }
 }
 </script>

@@ -18,12 +18,15 @@ export default {
             state.places = data
         },
         updateTickets(state, data) {
-            state.tickets.push(data)
+
+            state.tickets.push(data);
+            localStorage.setItem('tickets', JSON.stringify(state.tickets));
+            console.log(state.tickets);
         } 
     },
     state: {
         places: [],
-        tickets: []
+        tickets: JSON.parse(localStorage.getItem('tickets')) || []
     },
     getters: {
         places: (state) => state.places,

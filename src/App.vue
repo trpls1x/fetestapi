@@ -1,12 +1,27 @@
 <template>
   <div id="app">
     <v-app fill-height>
-      <v-container fluid>
+      <v-container fluid v-scroll="onScroll">
         <header-item/>
         <v-row>
           <sidebar-item/>
           <router-view/>
         </v-row>
+        <v-btn
+          v-if="scrollPosition >= 500"
+          @click="$vuetify.goTo(0)"
+          fixed
+          bottom
+          right
+          fab
+          large
+          dark
+          color="#FE4250"
+        >
+          <v-icon dark>
+            mdi-chevron-up
+          </v-icon>
+        </v-btn>
       </v-container>
     </v-app>
   </div>
@@ -20,6 +35,14 @@ export default {
   components: {
     HeaderItem,
     SidebarItem
+  },
+  data: () => ({
+    scrollPosition: null
+  }),
+  methods: {
+    onScroll() {
+      this.scrollPosition = window.pageYOffset
+    }
   }
 }
 </script>

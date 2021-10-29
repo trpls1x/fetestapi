@@ -66,5 +66,6 @@ tr
 
             &:hover
                 background: $light-red
+                color: #FFF
 
 </style>

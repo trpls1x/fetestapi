@@ -1,13 +1,13 @@
 <template>
     <v-col class="movies col-10 pt-12 px-10 d-flex flex-column">
         <span class="text-h3">Movies</span>
-        <div v-if="contentLoaded">
+        <div v-if="contentLoaded" class="fill-height">
             <v-row class="mt-12" v-if="movies.length">
                 <movie-card v-for="movie in movies" :key="movie.id" :movie="movie"></movie-card>
             </v-row>
-            <v-row class="d-flex justify-center align-center" v-else>
+            <div class="d-flex justify-center align-center fill-height" v-else>
                 <span class="text-h4">No such movies :(</span>
-            </v-row>
+            </div>
         </div>
         <div v-else class="d-flex justify-center align-center fill-height">
             <v-progress-circular
