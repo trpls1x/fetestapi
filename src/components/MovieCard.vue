@@ -1,5 +1,5 @@
 <template>
-    <v-col class="col-6 col-md-4 col-lg-3">
+    <v-col class="col-6 col-sm-4 col-lg-3">
         <router-link 
             :to="'/movies/' + movie.id" 
             class="text-decoration-none"
@@ -18,8 +18,8 @@
                             <v-icon color="white" x-large>mdi-movie-open</v-icon>
                         </div>
                     </v-img>
-                    <span class="text-h6">{{ movie.name }}</span>
-                    <span class="genre text-subtitle-1">{{ genres[movie.genre] }}</span>
+                    <span class="text-subtitle-1 text-md-h6">{{ movie.name }}</span>
+                    <span class="genre text-subtitle-2 text-subtitle-md-1">{{ genres[movie.genre] }}</span>
                 </div>
             </v-hover>
         </router-link>

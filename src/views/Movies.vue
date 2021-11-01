@@ -1,8 +1,8 @@
 <template>
-    <v-col class="movies col-10 pt-12 px-10 d-flex flex-column">
+    <v-col class="movies col-12 col-md-10 mt-4 mt-md-10 px-5 px-md-10 d-flex flex-column">
         <span class="text-h3">Movies</span>
         <div v-if="contentLoaded" class="fill-height">
-            <v-row class="mt-12" v-if="movies.length">
+            <v-row class="mt-4 mt-md-10" v-if="movies.length">
                 <movie-card v-for="movie in movies" :key="movie.id" :movie="movie"></movie-card>
             </v-row>
             <div class="d-flex justify-center align-center fill-height" v-else>
@@ -30,7 +30,6 @@ export default {
     }),
     computed: mapGetters(['movies']),
     async mounted() {
-        this.contentLoaded = false;
         await this.fetchMovies();
         this.contentLoaded = true;
     },

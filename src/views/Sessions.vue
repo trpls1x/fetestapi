@@ -1,6 +1,6 @@
 <template>
-    <v-col class="sessions col-10 pt-12 px-10 d-flex flex-column">
-        <span class="text-h3 mb-12">Sessions</span>
+    <v-col class="sessions col-12 col-md-10 mt-4 mt-md-10 px-5 px-md-10 d-flex flex-column">
+        <span class="text-h3 mb-10">Sessions</span>
         <div v-if="contentLoaded">
             <session v-for="movie in movies" :key="movie.id" :movie="movie" :session="movieShows[movie.id]"/>
         </div>

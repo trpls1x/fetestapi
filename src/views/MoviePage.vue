@@ -1,40 +1,48 @@
 <template>
-    <v-col class="col-10 pt-12 px-10">
-        <v-row v-if="movie">
-            <v-col class="col-5 col-lg-4">
+    <v-col class="col-12 col-md-10 mt-4 mt-md-10 px-5 px-md-10">
+        <v-row v-if="contentLoaded">
+            <v-col class="col-12 col-sm-5 col-lg-4">
                 <v-img :src="movie.image">
                 </v-img>
             </v-col>
-            <v-col class="col-7 col-lg-8 d-flex flex-column">
-                <span class="text-h2 mb-5">{{ movie.name }}</span>
+            <v-col class="col-12 col-sm-7 col-lg-8 d-flex flex-column">
+                <span class="text-h5 text-lg-h2 mb-5">{{ movie.name }}</span>
                 <div v-html="movie.additional"></div>
             </v-col>
-            <v-col class="col-12">
+            <v-col class="col-12 pt-0">
                 <div class="description" v-html="movie.description"></div>
             </v-col>
+            <v-col class="col-12 d-none">
+                <span class="text-h3">Available sessions</span>
+                <session-table :movie="movie" :session="movieShows[movie.id]" class="mt-3"></session-table>
+            </v-col>
         </v-row>
-
-        <span class="text-h2">Available sessions</span>
-        <session :movie="movie" :session="movieShows[movie.id]"/>
+        <div v-else class="d-flex justify-center align-center fill-height">
+            <v-progress-circular
+                indeterminate
+            ></v-progress-circular>
+        </div>
     </v-col>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import Session from '@/components/Session'
+import SessionTable from '@/components/SessionTable'
 
 export default {
     components: {
-        Session
+        SessionTable
     },
     data: () => ({
-        movie: {}
+        movie: {},
+        contentLoaded: false
     }),
     computed: mapGetters(['movies', 'movieShows']),
     async mounted() {
         await this.fetchMovies({ movie_id: this.$route.params.id });
         await this.fetchMovieShows({ movie_id: this.$route.params.id });
         this.movie = this.movies[0];
+        this.contentLoaded = true;
     },
     methods: {
         ...mapActions(['fetchMovies', 'fetchMovieShows'])
@@ -48,6 +56,7 @@ ul
     list-style-type: none
 li
     display: flex
+    text-align: justify
 
     a
         pointer-events: none
@@ -58,6 +67,16 @@ li
         font-weight: 600
         margin-right: 10px
         white-space: nowrap
+
+    @media screen and (max-width: 599px) 
+        display: block
+        .key
+            margin-bottom: 0
+
+.rating
+    @media screen and (max-width: 599px) 
+        margin-bottom: 16px
+
 
 .age_hint
     display: none

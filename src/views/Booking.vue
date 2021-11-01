@@ -1,42 +1,46 @@
 <template>
-    <v-col class="sessions col-10 pt-12 px-10 d-flex flex-column">
+    <v-col class="sessions col-12 col-md-10 mt-4 mt-md-10 px-md-10 d-flex flex-column">
         <div v-if="contentLoaded">
-            <v-row class="mb-12">
-                <v-col class="col-2">
-                    <v-img :src="movie.image"></v-img>
+            <v-row class="mb-12 px-3 px-md-0">
+                <v-col class="col-5 col-sm-3 col-md-2">
+                    <router-link :to="'/movies/' + movie.id">
+                        <v-img :src="movie.image"></v-img>
+                    </router-link>
                 </v-col>
-                <v-col class="col-10 d-flex flex-column pa-3">
-                    <span class="text-h4">{{ movie.name }}</span>
-                    <span class="genre text-h6 mb-5">{{ genres[movie.genre] }}</span>
-                    <span class="text-h5">{{ session.showdate | luxon }}</span>
-                    <span class="text-h5">{{ session.daytime }}</span>
+                <v-col class="col-7 col-sm-9 col-md-10 d-flex flex-column">
+                    <router-link :to="'/movies/' + movie.id" class="text-decoration-none">
+                        <span class="text-subtitle-1 text-sm-h4">{{ movie.name }}</span>
+                    </router-link>
+                    <span class="genre text-sm-h6 mb-5">{{ genres[movie.genre] }}</span>
+                    <span class="text-sm-h5">{{ session.showdate | luxon }}</span>
+                    <span class="text-sm-h5">{{ session.daytime }}</span>
                 </v-col>
             </v-row>
-            
             <v-row>
                 <v-col class="col-12 d-flex flex-column align-center">
-                    <table class="mb-5">
-                        <caption class="mb-3">
-                            <span class="screen text-h5 text-center">SCREEN</span>
-                            <svg viewBox="0 0 806 21" fill="#fff">
-                                <path d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
-                            </svg>
-                        </caption>
-                        <tr v-for="row in places" :key="row[0].row">
-                            <td>{{ row[0].row }}</td>
-                            <td v-for="seat in row[1]" :key="seat.seat" >
-                                <div 
-                                    class="seat d-flex justify-center align-center"
-                                    :class="{ 'booked' : !seat.is_free, 
-                                              'active' : chosenTickets.findIndex(ticket => ticket.id === `r${row[0].row}s${seat.seat}`) >= 0}"
-                                    @click="clickSeat(row[0].row, seat.seat)"
-                                >
-                                    <span>{{ seat.seat }}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-
+                    <div class="wrapper mb-5">
+                        <table class="ml-auto mr-auto">
+                            <caption class="mb-3">
+                                <span class="screen text-h5 text-center">SCREEN</span>
+                                <svg viewBox="0 0 806 21" fill="#fff">
+                                    <path d="M3.2,20l-2,0.2l-0.3-4l2-0.2C136.2,5.3,269.6,0,403,0s266.8,5.3,400.2,16l2,0.2l-0.3,4l-2-0.2 C669.5,9.3,536.3,4,403,4S136.4,9.3,3.2,20z"></path>
+                                </svg>
+                            </caption>
+                            <tr v-for="row in places" :key="row[0].row">
+                                <td>{{ row[0].row }}</td>
+                                <td v-for="seat in row[1]" :key="seat.seat" >
+                                    <div 
+                                        class="seat d-flex justify-center align-center"
+                                        :class="{ 'booked' : !seat.is_free, 
+                                                'active' : chosenTickets.findIndex(ticket => ticket.id === `r${row[0].row}s${seat.seat}`) >= 0}"
+                                        @click="clickSeat(row[0].row, seat.seat)"
+                                    >
+                                        <span>{{ seat.seat }}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <v-dialog
                         v-model="dialog"
                         width="500"
@@ -61,17 +65,16 @@
                             </v-badge>
                         </template>
 
-                        <v-card class="px-3" dark>
+                        <v-card dark>
                             <v-card-title class="text-h5">
                                 Book tickets
                             </v-card-title>
 
-                            <v-card-text style="max-height: 300px;">
-                                <div v-if="!chosenTickets.length" class="d-flex justify-center pa-3 mb-1">
+                            <v-card-text class="pb-2" style="max-height: 300px;">
+                                <div v-if="!chosenTickets.length" class="d-flex justify-center mb-1">
                                     <span>Please choose at least one ticket</span>
                                 </div>
-                                
-                                <div v-for="ticket in chosenTickets" :key="ticket.id" class="ticket d-flex align-center pa-3 mb-1">
+                                <div v-for="ticket in chosenTickets" :key="ticket.id" class="ticket d-flex align-center pa-1 pa-sm-3 mb-1">
                                     <div class="ticket-info d-flex justify-space-around">
                                         <span>Row: {{ ticket.row }}</span>
                                         <span>Seat: {{ ticket.seat }}</span>
@@ -85,8 +88,7 @@
                                 </div>
                             </v-card-text>
                             
-
-                            <v-card-actions class="justify-end px-0">
+                            <v-card-actions class="justify-end">
                                 <v-btn
                                     text
                                     @click="dialog = false"
@@ -95,7 +97,7 @@
                                 </v-btn>
                                 <v-btn color="#FE4250" 
                                     @click="bookTickets()"
-                                    :disabled="!chosenTickets.length"
+                                    :disabled="!chosenTickets.length || bookingRequest"
                                     dark
                                 >
                                     Book tickets
@@ -123,6 +125,7 @@ export default {
         session: {},
         chosenTickets: [],
         dialog: false,
+        bookingRequest: false,
         contentLoaded: false
     }),
     computed: mapGetters(['places', 'movies', 'genres']),
@@ -153,6 +156,7 @@ export default {
             });
         },
         async bookTickets() {
+            this.bookingRequest = true;
             for (let ticket of this.chosenTickets) {
                 await this.bookTicket({
                     movie_id: this.session.movie_id,
@@ -165,6 +169,7 @@ export default {
             await this.fetchPlaces(this.session);
             this.chosenTickets.length = 0;
             this.dialog = false;
+            this.bookingRequest = false;
         }
     }
 }
@@ -175,11 +180,22 @@ export default {
     *
         font-family: 'Poppins', sans-serif !important
 
+a
+    color: #FFF
+
 .genre
     color: $text-gray
 
+.wrapper
+    width: 80vw
+    overflow-x: auto
+
+    @media screen and (max-width: 959px) 
+        width: 93vw
+    
 table
     border-spacing: 5px
+    position: relative
     user-select: none
 
 caption
@@ -202,26 +218,21 @@ td
 .seat
     width: 20px
     height: 25px
-    background: #fff
+    background: #FFF
     font-size: 0.8rem
     border-radius: 7px 7px 2px 2px
     transition: 0.1s ease-in-out
 
-    &:hover
-        cursor: pointer
-        background: $light-red
-        color: #FFF
-
+    @media (hover: hover) and (pointer: fine)
+        &:hover
+            cursor: pointer
+            background: $light-red
+        
 .active
     background: $dark-red
-    color: #FFF
 
 .booked
-    pointer-events: none
-    background: $light-gray
-    
-    span
-        visibility: hidden  
+    visibility: hidden
 
 .v-card
     background: $light-gray !important
