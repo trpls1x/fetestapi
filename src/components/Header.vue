@@ -2,8 +2,8 @@
     <v-row class="header mb-3">
         <v-col class="logo col-2 col-md-2 d-flex justify-center align-center pa-0">
             <router-link 
-                :to="'/'" 
                 class="d-none d-md-flex justify-center align-center text-decoration-none"
+                :to="'/'" 
             >
                 <v-icon 
                     class="mr-1" 
@@ -15,7 +15,12 @@
                 <span class="d-none d-md-block">FETEST API</span>
             </router-link>
 
-            <v-btn dark icon @click="drawer = !drawer" class="d-block d-md-none">
+            <v-btn 
+                class="d-block d-md-none"
+                dark 
+                icon
+                @click="drawer = !drawer" 
+            >
                 <v-icon>mdi-menu</v-icon>
             </v-btn>
             <v-navigation-drawer
@@ -27,6 +32,16 @@
                     <v-list-item-group>
                         <v-list-item link :to="'/movies'">Movies</v-list-item>
                         <v-list-item link :to="'/sessions'">Sessions</v-list-item>
+                        <v-list-item link :to="'/tickets'">
+                            <v-badge
+                                :content="tickets.length"
+                                :value="tickets.length"
+                                inline 
+                                color="#FE4250"
+                            >
+                                My tickets
+                            </v-badge>
+                        </v-list-item>
                     </v-list-item-group>
                 </v-list>
             </v-navigation-drawer>
@@ -41,13 +56,19 @@
                     hide-details="auto"
                     prepend-icon="mdi-magnify"
                     color="white"
+                    dark
+                    clearable
                     @keydown="typing()"
                     @keyup="finishedTyping()"
-                    dark
+                    @click:clear="finishedTyping()"
                 ></v-text-field>
             </v-col>
             <v-col class="col-2 col-md-2 pa-0">      
-                <v-menu offset-y rounded="0"  :close-on-content-click="false">
+                <v-menu 
+                    :close-on-content-click="false"
+                    offset-y 
+                    rounded="0" 
+                >
                     <template v-slot:activator="{ attrs, on }">
                         <v-btn
                             class="pa-0"
@@ -96,8 +117,8 @@
         </template>
         <v-col v-else class="logo d-flex d-md-none align-center justify-end">
             <router-link 
-                :to="'/'" 
                 class="d-flex justify-end align-center text-decoration-none"
+                :to="'/'" 
             >
                 <v-icon 
                     class="mr-1" 
@@ -122,7 +143,7 @@ export default {
         searchGenres: [],
         drawer: false
     }),
-    computed: mapGetters(['genres']),
+    computed: mapGetters(['genres', 'tickets']),
     watch: {
         searchGenres() {
             this.search();
@@ -152,21 +173,21 @@ export default {
 </script>
 
 <style lang="sass">
-
 .header
     font-weight: 100
     height: 65px
     background: $light-red
-    color: #FFF
+    color: $white
 
 .logo
     background: $dark-red
     font-size: 1.2rem
     font-weight: 800
+    
     a
         height: 100%
         width: 100%
-        color: #FFF !important
+        color: $white !important
 
 .v-navigation-drawer 
     width: 100% !important
@@ -183,10 +204,6 @@ export default {
     * 
         display: flex
         justify-content: center
-
-.v-btn
-    *
-        font-family: 'Poppins', sans-serif !important
 
 .v-menu__content
     left: auto !important

@@ -6,17 +6,26 @@
             </router-link>
         </v-col>
         <v-col class="col-8 col-sm-10 col-md-9 d-flex flex-column pb-0">
-            <router-link :to="'/movies/' + movie.id" class="text-decoration-none">
+            <router-link 
+                class="text-decoration-none"
+                :to="'/movies/' + movie.id" 
+            >
                 <span class="text-h6 text-sm-h5">{{ movie.name }}</span>
             </router-link>
             <span class="genre text-subtitle-2 mb-4">{{ genres[movie.genre] }}</span>
-
             <div class="wrapper d-none d-md-block">
-                <session-table :movie="movie" :session="session"></session-table>
+                <session-table 
+                    :movie="movie" 
+                    :session="session"
+                ></session-table>
             </div>
         </v-col>
         <v-col class="col-12 d-md-none pt-0">
-            <session-table class="mb-4" :movie="movie" :session="session"></session-table>
+            <session-table 
+                class="mb-4" 
+                :movie="movie" 
+                :session="session"
+            ></session-table>
             <v-divider dark/>
         </v-col>
     </v-row>
@@ -44,7 +53,7 @@ export default {
 
 <style lang="sass" scoped>
 a
-    color: #FFF
+    color: $white
 
 .genre
     color: $text-gray

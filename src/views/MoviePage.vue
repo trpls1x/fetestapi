@@ -1,11 +1,11 @@
 <template>
     <v-col class="col-12 col-md-10 mt-4 mt-md-10 px-5 px-md-10">
-        <v-row v-if="contentLoaded">
+        <v-row v-if="contentLoaded && movie">
             <v-col class="col-12 col-sm-5 col-lg-4">
                 <v-img :aspect-ratio="4/6" :src="movie.image"></v-img>
             </v-col>
             <v-col class="col-12 col-sm-7 col-lg-8 d-flex flex-column">
-                <span class="text-h5 text-sm-h4 text-lg-h2 mb-5">{{ movie.name }}</span>
+                <span class="text-h5 text-sm-h4 text-lg-h3 mb-5">{{ movie.name }}</span>
                 <div v-html="movie.additional"></div>
             </v-col>
             <v-col class="col-12 pt-0">
@@ -40,6 +40,7 @@ export default {
     async mounted() {
         await this.fetchMovies({ movie_id: this.$route.params.id });
         await this.fetchMovieShows({ movie_id: this.$route.params.id });
+        !this.movies.length && this.$router.push({ path: '/page-not-found' });
         this.movie = this.movies[0];
         this.contentLoaded = true;
     },
@@ -60,7 +61,7 @@ li
     a
         pointer-events: none
         text-decoration: none
-        color: #FFF !important
+        color: $white !important
 
     .key 
         font-weight: 600

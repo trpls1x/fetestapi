@@ -1,12 +1,16 @@
 <template>
-    <v-col class="movies col-12 col-md-10 mt-4 mt-md-10 px-5 px-md-10 d-flex flex-column">
+    <v-col class="col-12 col-md-10 mt-4 mt-md-10 px-5 px-md-10 d-flex flex-column">
         <span class="text-h3">Movies</span>
         <div v-if="contentLoaded" class="fill-height">
-            <v-row class="mt-4 mt-md-10" v-if="movies.length">
-                <movie-card v-for="movie in movies" :key="movie.id" :movie="movie"></movie-card>
+            <v-row v-if="movies.length" class="mt-4 mt-md-10">
+                <movie-card 
+                    v-for="movie in movies" 
+                    :key="movie.id" 
+                    :movie="movie"
+                ></movie-card>
             </v-row>
             <div class="d-flex justify-center align-center fill-height" v-else>
-                <span class="text-h4">No such movies :(</span>
+                <span class="text-h6 text-sm-h4 text-center">No such movies :(</span>
             </div>
         </div>
         <div v-else class="d-flex justify-center align-center fill-height">
@@ -39,9 +43,3 @@ export default {
     
 }
 </script>
-
-<style lang="sass" scoped>
-.movies
-    *
-        font-family: 'Poppins', sans-serif !important
-</style>

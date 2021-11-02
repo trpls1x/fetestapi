@@ -4,6 +4,10 @@ const routes = [
         redirect: '/movies'
     },
     {
+        path: '*',
+        component: () => import('@/views/PageNotFound')
+    },
+    {
         name: 'movies',
         path: '/movies',
         component: () => import('@/views/Movies')

@@ -1,15 +1,15 @@
 <template>
     <v-col class="col-6 col-sm-4 col-lg-3">
         <router-link 
-            :to="'/movies/' + movie.id" 
             class="text-decoration-none"
+            :to="'/movies/' + movie.id" 
         >
             <v-hover v-slot="{ hover }">
                 <div class="card d-flex flex-column">
                     <v-img 
                         class="mb-3 elevation-10" 
-                        :aspect-ratio="4/6"
                         :src="movie.image"
+                        :aspect-ratio="4/6"
                     >
                         <div
                             class="hover-wrap fill-height d-flex justify-center align-center"
@@ -40,10 +40,12 @@ export default {
 
 <style lang="sass" scoped>
 .card
-    color: #FFF
-    &:hover
-        cursor: pointer
-        color: $light-red
+    color: $white
+
+    @media (hover: hover) and (pointer: fine)
+        &:hover
+            cursor: pointer
+            background: $light-red
         
 .genre
     color: $text-gray

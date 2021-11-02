@@ -4,7 +4,7 @@
             v-for="(link, key) in links" 
             :key="key" 
             :to="'/'+ key"
-            class="item d-flex justify-space-between align-center text-decoration-none py-3 px-8 mb-1"
+            class="item d-flex justify-space-between align-center text-decoration-none py-3 px-3 px-lg-8 mb-1"
             :class="{ 'active' : $route.name === key }"
         >
             <v-badge 
@@ -14,7 +14,7 @@
                 inline 
                 color="#FE4250"
             >
-                <span>{{ link }}</span>
+                <span class="mr-1">{{ link }}</span>
             </v-badge>
             <span v-else>{{ link }}</span>
             <v-icon v-if="$route.name === key" dark>
@@ -26,6 +26,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
     data: () => ({
         links: {
@@ -39,21 +40,18 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-
 .sidebar
     background: $dark-gray
 
 .item 
-    &:not(.active)
-        color: #FFF
+    color: $white
         
-    &:hover
-        background: $light-gray
-        cursor: pointer
+    @media (hover: hover) and (pointer: fine)
+        &:hover
+            background: $light-gray
 
 .active
     background: $light-gray
     color: $light-red
     font-weight: 700
-
 </style>
