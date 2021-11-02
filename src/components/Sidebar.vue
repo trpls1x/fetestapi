@@ -7,7 +7,16 @@
             class="item d-flex justify-space-between align-center text-decoration-none py-3 px-8 mb-1"
             :class="{ 'active' : $route.name === key }"
         >
-            <span>{{ link }}</span>
+            <v-badge 
+                v-if="key === 'tickets'" 
+                :content="tickets.length"
+                :value="tickets.length"
+                inline 
+                color="#FE4250"
+            >
+                <span>{{ link }}</span>
+            </v-badge>
+            <span v-else>{{ link }}</span>
             <v-icon v-if="$route.name === key" dark>
                 mdi-chevron-right
             </v-icon>
@@ -16,13 +25,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data: () => ({
         links: {
             'movies' : 'Movies',
-            'sessions' : 'Sessions'
+            'sessions' : 'Sessions',
+            'tickets' : 'My tickets'
         }
     }),
+    computed: mapGetters(['tickets'])
 }
 </script>
 

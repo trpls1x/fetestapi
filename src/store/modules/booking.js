@@ -8,19 +8,27 @@ export default {
             });
             commit('updatePlaces', response)
         },
-        async bookTicket(ctx, payload) {
-            await api.post('/bookPlace', payload)
+        async bookTicket({ commit }, payload) {
+            const response = await api.post('/bookPlace', payload);
+            commit('updateTickets', response)
         }
     },
     mutations: {
         updatePlaces(state, data) {
             state.places = data
-        }
+        },
+        updateTickets(state, data) {
+            state.tickets.push(data);
+            localStorage.setItem('tickets', JSON.stringify(state.tickets));
+            console.log(state.tickets);
+        } 
     },
     state: {
-        places: []
+        places: [],
+        tickets: JSON.parse(localStorage.getItem('tickets')) || []
     },
     getters: {
-        places: (state) => state.places
+        places: (state) => state.places,
+        tickets: (state) => state.tickets
     }
 }
