@@ -190,7 +190,7 @@ a
     width: 80vw
     overflow-x: auto
 
-    @media screen and (max-width: 959px) 
+    @media screen and (max-width: $md-breakpoint) 
         width: 93vw
     
 table

@@ -21,11 +21,12 @@
             <v-navigation-drawer
                 v-model="drawer"
                 absolute
+                clipped
             >
                 <v-list dark>
                     <v-list-item-group>
-                        <router-link :to="'/movies'" class="text-decoration-none"><v-list-item>Movies</v-list-item></router-link>
-                        <router-link :to="'/sessions'" class="text-decoration-none"><v-list-item>Sessions</v-list-item></router-link>
+                        <v-list-item link :to="'/movies'">Movies</v-list-item>
+                        <v-list-item link :to="'/sessions'">Sessions</v-list-item>
                     </v-list-item-group>
                 </v-list>
             </v-navigation-drawer>
@@ -94,14 +95,19 @@
             </v-col>
         </template>
         <v-col v-else class="logo d-flex d-md-none align-center justify-end">
-            <v-icon 
-                class="mr-1" 
-                color="white"
-                small 
+            <router-link 
+                :to="'/'" 
+                class="d-flex justify-end align-center text-decoration-none"
             >
-                mdi-movie-open
-            </v-icon>
-            <span>FETEST API</span>
+                <v-icon 
+                    class="mr-1" 
+                    color="white"
+                    small 
+                >
+                    mdi-movie-open
+                </v-icon>
+                <span>FETEST API</span>
+            </router-link>
         </v-col>
     </v-row>
 </template>

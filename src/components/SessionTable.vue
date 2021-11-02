@@ -1,19 +1,21 @@
 <template>
-    <table>
-        <tr v-for="date in session" :key="date.showdate">
-            <td>{{ date.showdate | luxon }}</td>
-            <td>
-                <v-btn 
-                    v-for="time in date.daytime.split(';')" 
-                    :key="time" 
-                    :to="{ path:'/booking', query: { movie_id: movie.id, daytime: time, showdate: date.showdate } }"
-                    class="ma-1 pa-0"
-                >
-                    {{ time }}
-                </v-btn>
-            </td>
-        </tr>
-    </table>
+    <div class="wrapper ml-auto mr-auto">
+        <table>
+            <tr v-for="date in session" :key="date.showdate">
+                <td>{{ date.showdate | luxon }}</td>
+                <td>
+                    <v-btn 
+                        v-for="time in date.daytime.split(';')" 
+                        :key="time" 
+                        :to="{ path:'/booking', query: { movie_id: movie.id, daytime: time, showdate: date.showdate } }"
+                        class="ma-1 pa-0"
+                    >
+                        {{ time }}
+                    </v-btn>
+                </td>
+            </tr>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -30,6 +32,13 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.wrapper
+    overflow: auto
+
+    @media screen and (max-width: $md-breakpoint) 
+        width: 87vw
+
+
 table
     width: fit-content
 tr

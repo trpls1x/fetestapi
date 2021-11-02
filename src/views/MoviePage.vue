@@ -2,19 +2,18 @@
     <v-col class="col-12 col-md-10 mt-4 mt-md-10 px-5 px-md-10">
         <v-row v-if="contentLoaded">
             <v-col class="col-12 col-sm-5 col-lg-4">
-                <v-img :src="movie.image">
-                </v-img>
+                <v-img :aspect-ratio="4/6" :src="movie.image"></v-img>
             </v-col>
             <v-col class="col-12 col-sm-7 col-lg-8 d-flex flex-column">
-                <span class="text-h5 text-lg-h2 mb-5">{{ movie.name }}</span>
+                <span class="text-h5 text-sm-h4 text-lg-h2 mb-5">{{ movie.name }}</span>
                 <div v-html="movie.additional"></div>
             </v-col>
             <v-col class="col-12 pt-0">
                 <div class="description" v-html="movie.description"></div>
             </v-col>
-            <v-col class="col-12 d-none">
-                <span class="text-h3">Available sessions</span>
-                <session-table :movie="movie" :session="movieShows[movie.id]" class="mt-3"></session-table>
+            <v-col class="col-12">
+                <span class="text-h5 text-sm-h4 text-lg-h3 ">Available sessions</span>
+                <session-table :movie="movie" :session="movieShows[movie.id]" class="mt-3 mb-12"></session-table>
             </v-col>
         </v-row>
         <div v-else class="d-flex justify-center align-center fill-height">
@@ -68,15 +67,14 @@ li
         margin-right: 10px
         white-space: nowrap
 
-    @media screen and (max-width: 599px) 
+    @media screen and (max-width: $sm-breakpoint) 
         display: block
         .key
             margin-bottom: 0
 
 .rating
-    @media screen and (max-width: 599px) 
+    @media screen and (max-width: $sm-breakpoint) 
         margin-bottom: 16px
-
 
 .age_hint
     display: none
