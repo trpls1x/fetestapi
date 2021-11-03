@@ -39,6 +39,12 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+::-webkit-scrollbar 
+    @extend %scrollbar
+    
+::-webkit-scrollbar-thumb 
+    @extend %scrollbar-thumb
+
 .wrapper
     overflow: auto
 

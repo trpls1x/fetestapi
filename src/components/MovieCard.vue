@@ -42,10 +42,9 @@ export default {
 .card
     color: $white
 
-    @media (hover: hover) and (pointer: fine)
-        &:hover
-            cursor: pointer
-            background: $light-red
+    &:hover
+        cursor: pointer
+        color: $light-red
         
 .genre
     color: $text-gray

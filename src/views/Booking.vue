@@ -182,8 +182,11 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-a
-    color: $white
+::-webkit-scrollbar 
+    @extend %scrollbar
+    
+::-webkit-scrollbar-thumb 
+    @extend %scrollbar-thumb
 
 .genre
     color: $text-gray
@@ -228,9 +231,10 @@ caption
 .booked
     visibility: hidden
 
-.v-card
-    background: $light-gray !important
-    border: 1px solid $white
+#app
+    .v-card
+        background: $light-gray
+        border: 1px solid $white
 
 .ticket
     background: $dark-gray

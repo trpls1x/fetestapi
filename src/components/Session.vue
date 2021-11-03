@@ -52,9 +52,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-a
-    color: $white
-
 .genre
     color: $text-gray
 </style>

@@ -51,9 +51,11 @@ export default {
 </script>
 
 <style lang="sass">
-ul
-    padding-left: 0 !important
-    list-style-type: none
+html
+    .v-application ul
+        padding-left: 0
+        list-style-type: none
+
 li
     display: flex
     text-align: justify
@@ -61,7 +63,6 @@ li
     a
         pointer-events: none
         text-decoration: none
-        color: $white !important
 
     .key 
         font-weight: 600
@@ -81,7 +82,8 @@ li
     display: none
 
 .description
-    text-align: justify !important
+    text-align: justify
+
     *
         text-align: justify !important
 </style>

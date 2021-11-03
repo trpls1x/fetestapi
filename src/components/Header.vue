@@ -177,7 +177,6 @@ export default {
     font-weight: 100
     height: 65px
     background: $light-red
-    color: $white
 
 .logo
     background: $dark-red
@@ -187,27 +186,19 @@ export default {
     a
         height: 100%
         width: 100%
-        color: $white !important
 
-.v-navigation-drawer 
-    width: 100% !important
-    background: $dark-gray !important
-    
-.v-navigation-drawer--is-mobile 
-    height: auto !important
-    transform: translateY(0%) !important
-
-.v-navigation-drawer--close 
-    transform: translateY(-100%) !important
+#app
+    .v-navigation-drawer 
+        background: $dark-gray
+        
+    .v-menu__content
+        left: auto !important
+        right: 0 !important
 
 .v-list-item-group 
     * 
         display: flex
         justify-content: center
-
-.v-menu__content
-    left: auto !important
-    right: 0 !important
 
 .v-list-item
     &:hover

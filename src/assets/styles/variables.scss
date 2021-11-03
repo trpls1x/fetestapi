@@ -12,3 +12,17 @@ $sm-breakpoint: 599px;
 $md-breakpoint: 959px;
 
 $body-font-family: 'Poppins', sans-serif;
+
+%scrollbar {
+    height: 5px;
+    background: $dark-gray;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+%scrollbar-thumb {
+    border-radius: 10px;
+    background: $white;
+    opacity: 0.5;
+}
